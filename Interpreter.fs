@@ -95,10 +95,10 @@ and stm st (env:Env) (store:Store) =
         match Map.find name env with
         | Reference loc as refl ->
             match Map.find loc store with
-            | Proc (parlist', defining_env, st) ->
+            | Proc (parlist', defenv, st) ->
                 let env' = 
                     List.fold2 (fun acc p1 p2 ->
-                        let loc = match Map.find p1 defining_env with
+                        let loc = match Map.find p1 defenv with
                                   | Reference _ as refl -> refl
                                   | _ -> failwith "undefined parameter"
                         Map.add p2 loc acc

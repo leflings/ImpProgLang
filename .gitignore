@@ -1,2 +1,4 @@
 obj/
 bin/
+Parser.fs
+Lexer.fs
