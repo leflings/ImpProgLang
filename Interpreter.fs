@@ -91,7 +91,21 @@ and stm st (env:Env) (store:Store) =
  
     | Block(ds,st1) -> let (env1,store1) = decList ds env store 
                        stm st1 env1 store1
-    | ProcCall(name, parlist) -> failwith "ProcCall error" 
+    | ProcCall(name, parlist) ->
+        match Map.find name env with
+        | Reference loc as refl ->
+            match Map.find loc store with
+            | Proc (parlist', defining_env, st) ->
+                let env' = 
+                    List.fold2 (fun acc p1 p2 ->
+                        let loc = match Map.find p1 defining_env with
+                                  | Reference _ as refl -> refl
+                                  | _ -> failwith "undefined parameter"
+                        Map.add p2 loc acc
+                    ) env parlist parlist'
+                stm st env' store
+            | _ -> failwith "Error"  
+        | _ -> failwith "Error"
     
 and decList ds env store = 
     match ds with
@@ -111,6 +125,9 @@ and dec d env store =
                                                     (env2, store2)
                      | _                         -> failwith "error"
     | ProcDec(name, parlist, stm) ->
-        failwith "Proc Dec failed"
+        let loc = nextLoc()
+        let env2 = Map.add name (Reference loc) env
+        let store2 = Map.add loc (Proc (parlist, env2, stm)) store
+        (env2, store2)
 ;;
 
