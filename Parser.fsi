@@ -7,6 +7,8 @@ type token =
   | COLON
   | COMMA
   | PRINT
+  | PROC
+  | CALL
   | ASG
   | SKIP
   | SEMI
@@ -30,6 +32,8 @@ type tokenId =
     | TOKEN_COLON
     | TOKEN_COMMA
     | TOKEN_PRINT
+    | TOKEN_PROC
+    | TOKEN_CALL
     | TOKEN_ASG
     | TOKEN_SKIP
     | TOKEN_SEMI
@@ -56,6 +60,8 @@ type nonTerminalId =
     | NONTERM__startStm
     | NONTERM__startStmList
     | NONTERM__startDec
+    | NONTERM__startPar
+    | NONTERM__startParList
     | NONTERM_Main
     | NONTERM_Stm
     | NONTERM_StmList
@@ -63,6 +69,8 @@ type nonTerminalId =
     | NONTERM_DecList
     | NONTERM_Exp
     | NONTERM_ExpList
+    | NONTERM_Par
+    | NONTERM_ParList
 /// This function maps integers indexes to symbolic token ids
 val tagOfToken: token -> int
 
@@ -81,3 +89,5 @@ val DecList : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microso
 val Stm : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (Stm) 
 val StmList : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (Stm list) 
 val Dec : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (Dec) 
+val Par : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (string) 
+val ParList : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> (string list) 

@@ -20,9 +20,11 @@ let keyword s =
     | "true"      -> BOOL(true) 
     | "false"     -> BOOL(false)
     | "toString"  -> NAME("toString")
+    | "proc" -> PROC
+    | "call" -> CALL
     | _           -> NAME s  
 
-# 25 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 27 "C:\fp\Code\ImpProgLang\Lexer.fs"
 let trans : uint16[] array = 
     [| 
    (* State 0 *)
@@ -85,104 +87,104 @@ and tokenize  (lexbuf : Microsoft.FSharp.Text.Lexing.LexBuffer<_>) = _fslex_toke
 and _fslex_tokenize  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 38 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 40 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  tokenize lexbuf 
-# 90 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 92 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 1 -> ( 
-# 39 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 41 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  lexbuf.EndPos <- lexbuf.EndPos.NextLine; tokenize lexbuf 
-# 95 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 97 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 2 -> ( 
-# 40 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 42 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  INT<| Int32.Parse(Encoding.UTF8.GetString(lexbuf.Lexeme)) 
-# 100 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 102 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 3 -> ( 
-# 41 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 43 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  let str = (Encoding.UTF8.GetString(lexbuf.Lexeme))
                                  let last = str.Length - 1
                                  STRING (str.Remove(last).Remove(0,1)) 
-# 107 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 109 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 4 -> ( 
-# 44 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 46 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  CONTOF
-# 112 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 114 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 5 -> ( 
-# 45 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 47 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  LPAR  
-# 117 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 119 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 6 -> ( 
-# 46 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 48 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  RPAR  
-# 122 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 124 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 7 -> ( 
-# 47 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 49 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  SEMI  
-# 127 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 129 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 8 -> ( 
-# 48 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 50 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  COLON 
-# 132 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 134 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 9 -> ( 
-# 49 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 51 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  COMMA 
-# 137 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 139 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 10 -> ( 
-# 50 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 52 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  ASG   
-# 142 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 144 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 11 -> ( 
-# 51 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 53 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  NAME("<>") 
-# 147 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 149 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 12 -> ( 
-# 52 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 54 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  NAME("<") 
-# 152 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 154 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 13 -> ( 
-# 53 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 55 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  NAME("*") 
-# 157 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 159 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 14 -> ( 
-# 54 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 56 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  NAME("-") 
-# 162 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 164 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 15 -> ( 
-# 55 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 57 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  NAME("=") 
-# 167 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 169 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 16 -> ( 
-# 56 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 58 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  NAME("+") 
-# 172 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 174 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 17 -> ( 
-# 57 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 59 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  keyword(Encoding.UTF8.GetString(lexbuf.Lexeme)) 
-# 177 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 179 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | 18 -> ( 
-# 58 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 60 "C:\fp\Code\ImpProgLang\Lexer.fsl"
                                  EOF 
-# 182 "C:\fp\Code\ImpProgLang\Lexer.fs"
+# 184 "C:\fp\Code\ImpProgLang\Lexer.fs"
           )
   | _ -> failwith "tokenize"
 
-# 60 "C:\fp\Code\ImpProgLang\Lexer.fsl"
+# 62 "C:\fp\Code\ImpProgLang\Lexer.fsl"
 
 # 3000000 "C:\fp\Code\ImpProgLang\Lexer.fs"

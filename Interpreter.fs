@@ -15,14 +15,14 @@ type Value    = | IntVal of int
                 | StringVal of string 
                 | Reference of Location 
                 | Primitive of (List<Value> -> Value)
-and Env       = Map<string,Value>
+and Env       = Map<string,Value> // Environment maps names to their meanings
 
 
-type Closure =  List<string> * Env * Stm
+type Closure =  List<string> * Env * Stm // A closure denotes the meaning of a procedure declaration
 
 type Content = SimpVal of Value | Proc of Closure |  ArrayCnt of Value [];;
 
-type Store  = Map<Location,Content>  
+type Store  = Map<Location,Content> // Store maps locations to contents
   
 let closureOf(ps,st) env = (ps, env, st)
 
@@ -90,7 +90,8 @@ and stm st (env:Env) (store:Store) =
                        | _             -> failwith "type error"                     
  
     | Block(ds,st1) -> let (env1,store1) = decList ds env store 
-                       stm st1 env1 store1 
+                       stm st1 env1 store1
+    | ProcCall(name, parlist) -> failwith "ProcCall error" 
     
 and decList ds env store = 
     match ds with
@@ -108,6 +109,8 @@ and dec d env store =
                                                  -> let env2 = Map.add s (Reference loc) env
                                                     let store2 = Map.add loc (SimpVal res) store1
                                                     (env2, store2)
-                     | _                         -> failwith "error"                                    
+                     | _                         -> failwith "error"
+    | ProcDec(name, parlist, stm) ->
+        failwith "Proc Dec failed"
 ;;
 

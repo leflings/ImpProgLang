@@ -15,7 +15,7 @@ let parseString (text:string) =
        Parser.Main Lexer.tokenize lexbuf
    with e ->
         let pos = lexbuf.EndPos
-        printfn "Error near line %d, character %d\n" pos.Line pos.Column
+        printfn "Error near line %d, character %d, %s\n" pos.Line pos.Column e.Message
         failwith "parser termination"
 
 

@@ -14,7 +14,9 @@ and  Stm = | Asg of Exp * Exp
            | Seq of List<Stm>
            | While of Exp * Stm
            | Block of List<Dec> * Stm
+           | ProcCall of string * string list
 and Dec  = | VarDec of string * Exp
+           | ProcDec of string * string list * Stm
 
 
 

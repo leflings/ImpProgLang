@@ -19,6 +19,8 @@ let keyword s =
     | "true"      -> BOOL(true) 
     | "false"     -> BOOL(false)
     | "toString"  -> NAME("toString")
+    | "proc" -> PROC
+    | "call" -> CALL
     | _           -> NAME s  
 }
 
