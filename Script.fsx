@@ -72,7 +72,6 @@ let _ = ignore (stm p7 initEnv Map.empty);;
 
 
 // Parsing and interpreting programs with arrays
-(*
 let randomArray = parseDec "proc randomArray(rng, lng) 
                                let a[!lng]: 0;
                                    i: 0
@@ -82,7 +81,6 @@ let randomArray = parseDec "proc randomArray(rng, lng)
                                od;
                                return a
                                end";;
-*)
 
 // Auxiliary procedures on arrays are in the file "ArrayUtil.while"
 // They are used to built up a basic environment and a basic store

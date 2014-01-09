@@ -81,6 +81,33 @@ let rec exp e (env:Env) (store:Store) =
     | Int i       -> (IntVal i, store)
     | Bool b      -> (BoolVal b,store)
     | String s    -> (StringVal s,store)
+    | ArrayElm(var, ex) ->
+        let v = match var with
+                | Var v -> v
+                | _ -> failwith "must be array var"
+        let (elm, store2) = exp ex env store
+        let index = match elm with
+                    | IntVal v -> v
+                    | _ -> failwith "array index must be integer"
+        match Map.find v env with
+        | Reference r -> match Map.find r store2 with
+                         | ArrayCnt a -> 
+                            try
+                                (a.[index], store2)
+                            with
+                            | :? System.IndexOutOfRangeException -> failwith "array index out of bounds"
+                         | _ -> failwith "array not in store"
+        | _ -> failwithf "variable %s is not array" v
+    | ArrayFun(var, func) ->
+        let var = match var with | Var v -> v | _ -> failwith "must be array var"
+        match Map.find var env with
+        | Reference r -> match Map.find r store with
+                         | ArrayCnt a ->
+                            match func with
+                            | "length" -> (IntVal (Array.length a), store)
+                            | _ -> failwith "unknown array function"
+                         | _ -> failwith "array not in store"
+        | _ -> failwith "variable %s not defined" var
 
 and expList es env store = 
     match es with 
@@ -93,13 +120,27 @@ and expList es env store =
 // stm: Stm -> Env -> Store -> option<Value> * Store
 and stm st (env:Env) (store:Store) = 
     match st with 
-    | Asg(el,e) -> let (res,store1) = exp e env store
-                   let (resl, store2) = exp el env store1
+    | Asg(el,e) ->
+        let (res,store1) = exp e env store
+        match el with
+        | Var v -> let (resl, store2) = exp el env store1
                    match resl with 
                    | Reference loc -> (None, Map.add loc (SimpVal res) store2) 
                    | _                               -> failwith "type error"
+        | ArrayElm(v,elexp) ->
+            let (indexval, store2) = exp elexp env store
+            let index = match indexval with | IntVal v -> v | _ -> failwith "index expression must evaluate to integer"
+            match v with
+            | Var v ->
+                match Map.find v env with
+                | Reference loc -> match Map.find loc store2 with
+                                   | ArrayCnt a -> a.[index] <- res
+                                                   (None, store2)
+                                   | _ -> failwith "type error"
+                | _ -> failwith "error"
+            | _ -> failwith "type error"
+        | _ -> failwith "wut?"
                    
-         
     | PrintLn e -> match exp e env store with
                    | (StringVal s,store1) -> (printfn "%s" s; (None,store1))
                    | _                    -> failwith "error"                  
@@ -176,5 +217,17 @@ and dec d env store =
         let env2 = Map.add name (Reference loc) env
         let store2 = Map.add loc (Proc (parlist, env2, stm)) store
         (env2, store2)
+    | ArrayDec(name, size, init) ->
+        let loc = nextLoc()
+        let env2 = Map.add name (Reference loc) env
+        let (sizeVal, store2) = exp size env2 store
+        let arraysize = match sizeVal with
+                        | IntVal v -> v
+                        | _ -> failwith "Array length must be given as int"
+        let (res, store3) = exp init env2 store2
+        let store4 = match res with
+                     | IntVal _ -> Map.add loc (ArrayCnt(Array.init arraysize (fun index -> res))) store3
+                     | _ -> failwith "Arrays only support integers... for now"
+        (env2, store4)
 ;;
 
