@@ -7,8 +7,14 @@ type token =
   | COLON
   | COMMA
   | PRINT
+  | IF
+  | FI
+  | THEN
+  | ELSE
   | PROC
   | CALL
+  | REC
+  | RETURN
   | ASG
   | SKIP
   | SEMI
@@ -32,8 +38,14 @@ type tokenId =
     | TOKEN_COLON
     | TOKEN_COMMA
     | TOKEN_PRINT
+    | TOKEN_IF
+    | TOKEN_FI
+    | TOKEN_THEN
+    | TOKEN_ELSE
     | TOKEN_PROC
     | TOKEN_CALL
+    | TOKEN_REC
+    | TOKEN_RETURN
     | TOKEN_ASG
     | TOKEN_SKIP
     | TOKEN_SEMI

@@ -64,7 +64,7 @@ let _ = ignore (stm p4 initEnv Map.empty);;
 let p5 = parseFromFile "Factorial3.while";;
 let _ = ignore (stm p5 initEnv Map.empty);;
 
-// let p6 = parseFromFile "Factorial4.while";;
+let p6 = parseFromFile "Factorial4.while";;
 // let _ = ignore (stm p6 initEnv Map.empty);;
 
 // let p7 = parseFromFile "Factorial5.while";;

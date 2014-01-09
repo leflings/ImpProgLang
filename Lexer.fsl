@@ -21,6 +21,12 @@ let keyword s =
     | "toString"  -> NAME("toString")
     | "proc" -> PROC
     | "call" -> CALL
+    | "rec" -> REC
+    | "if" -> IF
+    | "fi" -> FI
+    | "then" -> THEN
+    | "else" -> ELSE
+    | "return" -> RETURN
     | _           -> NAME s  
 }
 
