@@ -65,10 +65,10 @@ let p5 = parseFromFile "Factorial3.while";;
 let _ = ignore (stm p5 initEnv Map.empty);;
 
 let p6 = parseFromFile "Factorial4.while";;
-// let _ = ignore (stm p6 initEnv Map.empty);;
+let _ = ignore (stm p6 initEnv Map.empty);;
 
-// let p7 = parseFromFile "Factorial5.while";;
-// let _ = ignore (stm p7 initEnv Map.empty);;
+let p7 = parseFromFile "Factorial5.while";;
+let _ = ignore (stm p7 initEnv Map.empty);;
 
 
 // Parsing and interpreting programs with arrays

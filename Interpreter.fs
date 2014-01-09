@@ -30,6 +30,17 @@ let closureOf(ps,st) env = (ps, env, st)
 let nextLoc: unit -> int =  let n = ref 0
                             let f x = (n := !n+1; !n)
                             f
+let printenv (env:Env) =
+    env
+    |> Map.iter (fun k v ->
+            let s = match v with
+                    | Primitive _ -> "primitive"
+                    | s -> s |> string
+            printf "'%s' -> %s; " k s)
+    printfn ""
+
+                
+
 
 // exp: Exp -> Env -> Store -> Value * Store 
 let rec exp e (env:Env) (store:Store) = 
@@ -47,6 +58,24 @@ let rec exp e (env:Env) (store:Store) =
     | Apply(f,es) -> let (vals, store1) = expList es env store
                      match Map.find f env with 
                      | Primitive f   -> (f vals, store1) 
+                     | Reference f -> 
+                        match Map.find f store with
+                        | Proc (parlist, defenv, statement) ->
+                            let env =
+                                List.fold2 (fun acc p1 p2 ->
+                                    let p1' = match p1 with
+                                              | Var n -> n
+                                              | _ -> failwith "parameters must be vars"
+                                    let loc = match Map.find p1' env with
+                                              | Reference _ as refl -> refl
+                                              | _ -> failwith "undefined parameter"
+                                    Map.add p2 loc acc
+                                ) env es parlist
+                            let (ret, store') = stm statement env store
+                            match ret with
+                            | Some x -> (x, store')
+                            | None -> failwith "Procedure must have return value"
+                        | _ -> failwith "Unknown appliance"
                      | _              -> failwith "type error"          
                                                                
     | Int i       -> (IntVal i, store)
@@ -98,14 +127,32 @@ and stm st (env:Env) (store:Store) =
             | Proc (parlist', defenv, st) ->
                 let env' = 
                     List.fold2 (fun acc p1 p2 ->
-                        let loc = match Map.find p1 defenv with
-                                  | Reference _ as refl -> refl
-                                  | _ -> failwith "undefined parameter"
+                        let loc = match Map.tryFind p1 defenv with
+                                  | Some x -> match x with
+                                              | Reference _ as refl -> refl
+                                              | _ -> failwith "undefined parameter"
+                                  | None -> match Map.find p1 env with
+                                            | Reference _ as refl -> refl
+                                            | _ -> failwith "parameter not in scope"
                         Map.add p2 loc acc
                     ) env parlist parlist'
                 stm st env' store
             | _ -> failwith "Error"  
         | _ -> failwith "Error"
+    | Return(ex) ->
+        let (value, store') = exp ex env store
+        (Some value, store')
+    | IT(ex, st) -> let (res, st') = exp ex env store
+                    match res with
+                    | BoolVal true -> stm st env st'
+                    | BoolVal false -> (None, st')
+                    | _ -> failwith "if expr must evalute to boolean"
+    | ITE(ex, st1, st2) ->
+        let (res, st') = exp ex env store
+        match res with
+        | BoolVal true -> stm st1 env st'
+        | BoolVal false -> stm st2 env st'
+        | _ -> failwith "if expr must evalute to boolean"
     
 and decList ds env store = 
     match ds with
