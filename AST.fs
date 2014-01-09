@@ -7,7 +7,9 @@ type Exp = | Int of int
            | String of string 
            | Var of string 
            | ContOf of Exp 
-           | Apply of string * List<Exp>    
+           | Apply of string * List<Exp>
+           | ArrayElm of Exp * Exp  // Var * Exp
+           | ArrayFun of Exp * string // Var * length (or others)
 
 and  Stm = | Asg of Exp * Exp
            | PrintLn of Exp
@@ -20,6 +22,7 @@ and  Stm = | Asg of Exp * Exp
            | Return of Exp
 and Dec  = | VarDec of string * Exp
            | ProcDec of string * string list * Stm
+           | ArrayDec of string * Exp * Exp
 
 
 

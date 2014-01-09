@@ -15,6 +15,9 @@ type token =
   | CALL
   | REC
   | RETURN
+  | LBRAC
+  | RBRAC
+  | DOT
   | ASG
   | SKIP
   | SEMI
@@ -46,6 +49,9 @@ type tokenId =
     | TOKEN_CALL
     | TOKEN_REC
     | TOKEN_RETURN
+    | TOKEN_LBRAC
+    | TOKEN_RBRAC
+    | TOKEN_DOT
     | TOKEN_ASG
     | TOKEN_SKIP
     | TOKEN_SEMI

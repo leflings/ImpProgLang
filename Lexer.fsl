@@ -51,7 +51,10 @@ rule tokenize =
                   STRING (str.Remove(last).Remove(0,1)) }
   | "!"         { CONTOF} 
   | "("         { LPAR  } 
-  | ")"         { RPAR  }  
+  | ")"         { RPAR  }
+  | "["         { LBRAC }
+  | "]"         { RBRAC }
+  | "."         { DOT }  
   | ";"         { SEMI  }
   | ":"         { COLON }
   | ","         { COMMA }
