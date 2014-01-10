@@ -65,7 +65,7 @@ Exp:
   | CONTOF Exp                           { ContOf $2 }        
   | LPAR Exp RPAR                        { $2 }
   | NAME LPAR ExpList RPAR               { Apply($1, $3) }
-  | NAME LBRAC Exp RPAR                  { ArrayElm(Var $1, $3) }
+  | NAME LBRAC Exp RBRAC                  { ArrayElm(Var $1, $3) }
   | NAME DOT NAME						 { ArrayFun(Var $1, $3) }
 
 ExpList:
