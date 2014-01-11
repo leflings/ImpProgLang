@@ -4,7 +4,7 @@ in
 	try 
 		let s: "Attempting to print ref"
 		in
-			print toString(a);
+			print toString(!a);
 			a := +(!a,!b);
 			a := 11
 		end

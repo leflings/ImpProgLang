@@ -48,15 +48,15 @@ let (basisEnv, basisStore) = decList arrayUtilDecs initEnv Map.empty;;
 
 printfn ""
 
-//let tc = parseFromFile "TryCatch.while";;
-//let _ = ignore (stm tc basisEnv basisStore);;
-//
-//printfn ""
-//
-//let tf = parseFromFile "TryFinally.while";;
-//let _ = ignore (stm tf basisEnv basisStore);;
-//
-//printfn ""
+let tc = parseFromFile "TryCatch.while";;
+let _ = ignore (stm tc basisEnv basisStore);;
+
+printfn ""
+
+let tf = parseFromFile "TryFinally.while";;
+let _ = ignore (stm tf basisEnv basisStore);;
+
+printfn ""
 
 let tcf = parseFromFile "TryCatchFinally.while";;
 let _ = ignore (stm tcf basisEnv basisStore);;

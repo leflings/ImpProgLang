@@ -119,6 +119,10 @@ and expList es env store =
  
 // stm: Stm -> Env -> Store -> option<Value> * Store
 and stm st (env:Env) (store:Store) = 
+    let (res, store') = (ref None, ref store)
+    let exec st = let (r,s) = stm st env !store'
+                  res := r
+                  store' := s
     match st with 
     | Asg(el,e) ->
         let (res,store1) = exp e env store
@@ -202,37 +206,23 @@ and stm st (env:Env) (store:Store) =
         with
         | e -> printfn "(failed with: %s)" e.Message
                stm c env store
-    | TF(t,f) -> let res = ref None
-                 let store' = ref store
-                 try
+    | TF(t,f) -> try
                     try
-                        let (r,s) = stm t env store
-                        res := r
-                        store' := s
+                        exec t
                     with
                     | e -> printfn "(failed with: %s)" e.Message; ()
                  finally
-                    let (r,s) = stm f env !store'
-                    res := r
-                    store' := s
+                    exec f
                 |> fun _ -> (!res, !store')
     | TCF(t,c,f) ->
-        let res = ref None
-        let store' = ref store
         try
             try
-                let (r,s) = stm t env store
-                res := r
-                store' := s
+                exec t
             with
             | e -> printfn "(failed with: %s)" e.Message
-                   let (r,s) = stm c env !store'
-                   res := r
-                   store' := s
+                   exec c
         finally
-            let (r,s) = stm f env !store'
-            res := r
-            store' := s
+            exec f
         |> fun _ -> (!res, !store')
                     
                     
@@ -273,4 +263,3 @@ and dec d env store =
                      | _ -> failwith "Arrays only support integers... for now"
         (env2, store4)
 ;;
-
