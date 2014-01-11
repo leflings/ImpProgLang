@@ -1,0 +1,25 @@
+﻿let a: 1; b: 5; t: 10;
+	proc ref()
+		let proc a(num,target)
+			if <(!num,!target)
+			then
+				while <>(!num,!target)
+				do
+					num := +(!num,1)
+				od
+			else
+				while <>(!num,!target)
+				do
+					num := -(!num,1)
+				od
+			fi
+		in
+			return a
+		end
+in
+	a := ref();
+	print toString(!b);
+	print toString(!t);
+	call a(b,t);
+	print toString(!b)
+end
