@@ -1,14 +1,16 @@
-﻿let a: 1; b: 5; t: 10;
+﻿let a: 1; b: 15; t: 10;
+	proc neq(a,b)
+		return <>(!a,!b);
 	proc ref()
 		let proc a(num,target)
 			if <(!num,!target)
 			then
-				while <>(!num,!target)
+				while neq(num,target)
 				do
 					num := +(!num,1)
 				od
 			else
-				while <>(!num,!target)
+				while neq(num,target)
 				do
 					num := -(!num,1)
 				od
