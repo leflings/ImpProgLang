@@ -1,0 +1,16 @@
+﻿let
+	proc printer(line)
+		let in
+			print toString("From passed procedure:");
+			print toString(!line)
+		end
+	; proc pass(ref)
+		let
+			line: "    Success"
+		in
+			print toString("Calling passed procedure");
+			call ref(line)
+		end
+in
+	call pass(printer)
+end

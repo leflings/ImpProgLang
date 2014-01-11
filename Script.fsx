@@ -97,4 +97,7 @@ let _ = ignore (stm ap2 basisEnv basisStore);;
 let test = parseFromFile "ProcedureReturn.while"
 let _ = ignore (stm test basisEnv basisStore)
 
+let test1 = parseFromFile "ProcedurePass.while"
+let _ = ignore (stm test1 basisEnv basisStore)
+
 
