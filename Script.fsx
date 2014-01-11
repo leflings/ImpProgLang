@@ -38,22 +38,22 @@ let initEnv = Map.ofList [("+",plusInt); ("-",minusInt); ("*",multInt);
                           ("randomInt", randomInt); ("toString",toString)  ];;
 
 // Parsing strings
-let s1 = parseStm "while <>(!n,0)
-                   do y := *(!n,!y);
-                      n := -(!n,1)
-                   od";;
-
-let s2 = parseStm "let n: 4; y: 1
-                   in while <>(!n,0)
-                      do y := *(!n,!y);
-                         n := -(!n,1)
-                      od
-                   end";;
-
-// Parsing from files
-// Set current directory
+//let s1 = parseStm "while <>(!n,0)
+//                   do y := *(!n,!y);
+//                      n := -(!n,1)
+//                   od";;
+//
+//let s2 = parseStm "let n: 4; y: 1
+//                   in while <>(!n,0)
+//                      do y := *(!n,!y);
+//                         n := -(!n,1)
+//                      od
+//                   end";;
+//
+//// Parsing from files
+//// Set current directory
 System.IO.Directory.SetCurrentDirectory __SOURCE_DIRECTORY__;;
-
+//
 let p3 = parseFromFile "Factorial1.while";;
 // Interpret the statement
 let _ = ignore (stm p3 initEnv Map.empty);;
@@ -69,29 +69,30 @@ let _ = ignore (stm p6 initEnv Map.empty);;
 
 let p7 = parseFromFile "Factorial5.while";;
 let _ = ignore (stm p7 initEnv Map.empty);;
-
-
-// Parsing and interpreting programs with arrays
-let randomArray = parseDec "proc randomArray(rng, lng) 
-                               let a[!lng]: 0;
-                                   i: 0
-                               in while <(!i,a.length)
-                               do a[!i] := randomInt(rng);
-                                  i    := +(!i,1)
-                               od;
-                               return a
-                               end";;
+//
+//
+//// Parsing and interpreting programs with arrays
+//let randomArray = parseDec "proc randomArray(rng, lng) 
+//                               let a[!lng]: 0;
+//                                   i: 0
+//                               in while <(!i,a.length)
+//                               do a[!i] := randomInt(rng);
+//                                  i    := +(!i,1)
+//                               od;
+//                               return a
+//                               end";;
 
 // Auxiliary procedures on arrays are in the file "ArrayUtil.while"
 // They are used to built up a basic environment and a basic store
-//let arrayUtilDecs = parseDecListFromFile "ArrayUtil.while";;
+let arrayUtilDecs = parseDecListFromFile "ArrayUtil.while";;
 
-//let (basisEnv, basisStore) = decList arrayUtilDecs initEnv Map.empty;; 
+let (basisEnv, basisStore) = decList arrayUtilDecs initEnv Map.empty;; 
 
-//let ap1 = parseFromFile"ArrayProg1.while";; 
-//let _ = ignore (stm ap1 basisEnv basisStore);;
+let ap1 = parseFromFile"ArrayProg1.while";; 
+let _ = ignore (stm ap1 basisEnv basisStore);;
 
-//let ap2 = parseFromFile"ArrayProg2.while";; 
-//let _ = ignore (stm ap2 basisEnv basisStore);;
+let ap2 = parseFromFile"ArrayProg2.while";; 
+let _ = ignore (stm ap2 basisEnv basisStore);;
+
 
 

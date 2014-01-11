@@ -19,14 +19,14 @@ let keyword s =
     | "true"      -> BOOL(true) 
     | "false"     -> BOOL(false)
     | "toString"  -> NAME("toString")
-    | "proc" -> PROC
-    | "call" -> CALL
-    | "rec" -> REC
-    | "if" -> IF
-    | "fi" -> FI
-    | "then" -> THEN
-    | "else" -> ELSE
-    | "return" -> RETURN
+    | "proc"      -> PROC
+    | "call"      -> CALL
+    | "rec"       -> REC
+    | "if"        -> IF
+    | "fi"        -> FI
+    | "then"      -> THEN
+    | "else"      -> ELSE
+    | "return"    -> RETURN
     | _           -> NAME s  
 }
 

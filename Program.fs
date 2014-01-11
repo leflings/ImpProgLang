@@ -30,9 +30,20 @@ let initEnv = Map.ofList [("+",plusInt); ("-",minusInt); ("*",multInt); ("=",eqI
 
 
 // Parse a program in a file  
-let fac = parseFromFile "Factorial2.while"
+//let fac = parseFromFile "Factorial2.while"
+//
+//// Interpret the program 
+//let _  = stm fac initEnv Map.empty;;
 
-// Interpret the program 
-let _  = stm fac initEnv Map.empty;;
+
+let arrayUtilDecs = parseDecListFromFile "ArrayUtil.while";;
+
+let (basisEnv, basisStore) = decList arrayUtilDecs initEnv Map.empty;; 
+
+//let ap1 = parseFromFile"ArrayProg1.while";; 
+//let _ = ignore (stm ap1 basisEnv basisStore);;
+
+let ap2 = parseFromFile"ArrayProg2.while";; 
+let _ = ignore (stm ap2 basisEnv basisStore);;
 
 

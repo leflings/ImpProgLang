@@ -63,9 +63,15 @@
     <None Include="Factorial4.while" />
     <None Include="Factorial5.while" />
     <None Include="Factorial1.while" />
-    <None Include="ArrayUtil.while" />
-    <None Include="ArrayProg1.while" />
-    <None Include="ArrayProg2.while" />
+    <None Include="ArrayUtil.while">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ArrayProg1.while">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ArrayProg2.while">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.PowerPack, Version=4.0.0.1, Culture=neutral, PublicKeyToken=f536804aa0eb945b" />

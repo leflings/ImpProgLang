@@ -124,9 +124,10 @@ and stm st (env:Env) (store:Store) =
         let (res,store1) = exp e env store
         match el with
         | Var v -> let (resl, store2) = exp el env store1
-                   match resl with 
-                   | Reference loc -> (None, Map.add loc (SimpVal res) store2) 
-                   | _                               -> failwith "type error"
+                   let loc = match resl with | Reference l -> l | _ -> failwith "type error"
+                   match res with
+                   | Reference refloc -> (None, Map.add loc (Map.find refloc store2) store2)
+                   | _ -> (None, Map.add loc (SimpVal res) store2)
         | ArrayElm(v,elexp) ->
             let (indexval, store2) = exp elexp env store
             let index = match indexval with | IntVal v -> v | _ -> failwith "index expression must evaluate to integer"
