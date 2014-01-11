@@ -7,6 +7,10 @@ type token =
   | COLON
   | COMMA
   | PRINT
+  | TRY
+  | CATCH
+  | FINALLY
+  | YRT
   | IF
   | FI
   | THEN
@@ -41,6 +45,10 @@ type tokenId =
     | TOKEN_COLON
     | TOKEN_COMMA
     | TOKEN_PRINT
+    | TOKEN_TRY
+    | TOKEN_CATCH
+    | TOKEN_FINALLY
+    | TOKEN_YRT
     | TOKEN_IF
     | TOKEN_FI
     | TOKEN_THEN

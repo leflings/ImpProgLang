@@ -43,7 +43,22 @@ let (basisEnv, basisStore) = decList arrayUtilDecs initEnv Map.empty;;
 //let ap1 = parseFromFile"ArrayProg1.while";; 
 //let _ = ignore (stm ap1 basisEnv basisStore);;
 
-let ap2 = parseFromFile"ArrayProg2.while";; 
-let _ = ignore (stm ap2 basisEnv basisStore);;
+//let ap2 = parseFromFile"ArrayProg2.while";; 
+//let _ = ignore (stm ap2 basisEnv basisStore);;
 
+printfn ""
 
+//let tc = parseFromFile "TryCatch.while";;
+//let _ = ignore (stm tc basisEnv basisStore);;
+//
+//printfn ""
+//
+//let tf = parseFromFile "TryFinally.while";;
+//let _ = ignore (stm tf basisEnv basisStore);;
+//
+//printfn ""
+
+let tcf = parseFromFile "TryCatchFinally.while";;
+let _ = ignore (stm tcf basisEnv basisStore);;
+
+let _ = System.Console.ReadLine() |> ignore;;

@@ -94,10 +94,17 @@ let _ = ignore (stm ap1 basisEnv basisStore);;
 let ap2 = parseFromFile"ArrayProg2.while";; 
 let _ = ignore (stm ap2 basisEnv basisStore);;
 
-let test = parseFromFile "ProcedureReturn.while"
-let _ = ignore (stm test basisEnv basisStore)
+let test = parseFromFile "ProcedureReturn.while";;
+let _ = ignore (stm test basisEnv basisStore);;
 
-let test1 = parseFromFile "ProcedurePass.while"
-let _ = ignore (stm test1 basisEnv basisStore)
+let test1 = parseFromFile "ProcedurePass.while";;
+let _ = ignore (stm test1 basisEnv basisStore);;
 
+let tc = parseFromFile "TryCatch.while";;
+let _ = ignore (stm tc basisEnv basisStore);;
 
+let tf = parseFromFile "TryFinally.while";;
+let _ = ignore (stm tf basisEnv basisStore);;
+
+let tcf = parseFromFile "TryCatchFinally.while";;
+let _ = ignore (stm tcf basisEnv basisStore);;

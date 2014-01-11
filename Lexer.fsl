@@ -27,6 +27,11 @@ let keyword s =
     | "then"      -> THEN
     | "else"      -> ELSE
     | "return"    -> RETURN
+    | "try"       -> TRY
+    | "catch"     -> CATCH
+    | "finally"   -> FINALLY
+    | "yrt"       -> YRT
+    | "catch"     -> CATCH
     | _           -> NAME s  
 }
 

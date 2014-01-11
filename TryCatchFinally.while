@@ -1,0 +1,27 @@
+﻿let a: 10; b: "Flemming";
+	proc printer(ref) do print toString(!ref) od
+in
+	try 
+		let s: "Attempting to print ref"
+		in
+			print toString(a);
+			a := +(!a,!b);
+			a := 11
+		end
+	catch let s: "Catch block" in
+		call printer(s);
+		call printer(a);
+		a := 17 end
+	finally let s: "Finally block" in
+		call printer(s);
+		call printer(a);
+		a := 12 end
+	yrt;
+	try
+		a := printer(a)
+	catch
+		call printer(a)
+	yrt
+end
+
+

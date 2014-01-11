@@ -162,7 +162,7 @@ and stm st (env:Env) (store:Store) =
  
     | Block(ds,st1) -> let (env1,store1) = decList ds env store 
                        stm st1 env1 store1
-    | Do(st) -> stm st env store
+    | Do(st) ->     stm st env store
     | ProcCall(name, parlist) ->
         match Map.find name env with
         | Reference loc as refl ->
@@ -196,6 +196,47 @@ and stm st (env:Env) (store:Store) =
         | BoolVal true -> stm st1 env st'
         | BoolVal false -> stm st2 env st'
         | _ -> failwith "if expr must evalute to boolean"
+    | TC(t,c) ->
+        try
+            stm t env store
+        with
+        | e -> printfn "(failed with: %s)" e.Message
+               stm c env store
+    | TF(t,f) -> let res = ref None
+                 let store' = ref store
+                 try
+                    try
+                        let (r,s) = stm t env store
+                        res := r
+                        store' := s
+                    with
+                    | e -> printfn "(failed with: %s)" e.Message; ()
+                 finally
+                    let (r,s) = stm f env !store'
+                    res := r
+                    store' := s
+                |> fun _ -> (!res, !store')
+    | TCF(t,c,f) ->
+        let res = ref None
+        let store' = ref store
+        try
+            try
+                let (r,s) = stm t env store
+                res := r
+                store' := s
+            with
+            | e -> printfn "(failed with: %s)" e.Message
+                   let (r,s) = stm c env !store'
+                   res := r
+                   store' := s
+        finally
+            let (r,s) = stm f env !store'
+            res := r
+            store' := s
+        |> fun _ -> (!res, !store')
+                    
+                    
+
     
 and decList ds env store = 
     match ds with

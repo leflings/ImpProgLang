@@ -1,0 +1,15 @@
+﻿let a: 10; b: "Flemming"
+in
+	try do
+		print toString("Attempting to print reference");
+		a := 8;
+		print toString(a);
+		a := 11 od
+	finally do
+		print toString("Finally block");
+		print toString(!a);
+		a := 12 od
+	yrt;
+
+	print toString(!a)
+end

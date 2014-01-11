@@ -12,6 +12,7 @@ open AST
 %token LBRAC RBRAC DOT
 %token PROC CALL REC RETURN
 %token IF FI THEN ELSE
+%token TRY CATCH FINALLY YRT
 %token COLON COMMA PRINT
 %token LPAR RPAR
 %token EOF
@@ -41,6 +42,9 @@ Stm:
   | CALL NAME LPAR ParList RPAR { ProcCall($2, $4) }
   | IF Exp THEN StmList FI { IT($2, Seq $4) }
   | IF Exp THEN StmList ELSE StmList FI { ITE($2, Seq $4, Seq $6) }
+  | TRY Stm CATCH Stm YRT               { TC($2, $4) }
+  | TRY Stm FINALLY Stm YRT             { TF($2, $4) }
+  | TRY Stm CATCH Stm FINALLY Stm YRT   { TCF($2, $4, $6) }
   | RETURN Exp { Return($2) }
 
 StmList:

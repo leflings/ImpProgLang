@@ -1,0 +1,32 @@
+﻿let a: 10; b: "Flemming"; array[10]: 5
+in
+	try do
+		print toString("Attempting to print reference");
+		print toString(a) od
+	catch
+		print toString(!b)
+	yrt;
+
+	try do
+		print toString("Attempting to print reference");
+		print toString(a);
+		a := 11 od
+	finally
+		a := 12
+	yrt;
+
+	print toString(!a);
+
+	try
+		array[11] := 3
+	catch
+		array[5] := 3
+	yrt;
+
+	try
+		call array()
+	catch
+		call printArray(array)
+	yrt
+
+end
