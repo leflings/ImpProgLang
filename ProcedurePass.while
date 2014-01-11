@@ -1,9 +1,9 @@
 ﻿let
 	proc printer(line)
-		let in
+		do
 			print toString("From passed procedure:");
 			print toString(!line)
-		end
+		od
 	; proc pass(ref)
 		let
 			line: "    Success"

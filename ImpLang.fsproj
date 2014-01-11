@@ -72,6 +72,8 @@
     <None Include="ArrayProg2.while">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="ProcedureReturn.while" />
+    <None Include="ProcedurePass.while" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.PowerPack, Version=4.0.0.1, Culture=neutral, PublicKeyToken=f536804aa0eb945b" />

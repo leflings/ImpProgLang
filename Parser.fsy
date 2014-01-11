@@ -36,6 +36,7 @@ Stm:
   | NAME LBRAC Exp RBRAC ASG Exp         { Asg(ArrayElm(Var $1, $3), $6) }
   | WHILE Exp DO StmList OD				 { While($2,Seq $4) }
   | LET DecList IN StmList END           { Block($2,Seq $4) }
+  | DO StmList OD                            { Do(Seq $2) }
   | PRINT Exp                            { PrintLn $2 }
   | CALL NAME LPAR ParList RPAR { ProcCall($2, $4) }
   | IF Exp THEN StmList FI { IT($2, Seq $4) }

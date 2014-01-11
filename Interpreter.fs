@@ -162,6 +162,7 @@ and stm st (env:Env) (store:Store) =
  
     | Block(ds,st1) -> let (env1,store1) = decList ds env store 
                        stm st1 env1 store1
+    | Do(st) -> stm st env store
     | ProcCall(name, parlist) ->
         match Map.find name env with
         | Reference loc as refl ->

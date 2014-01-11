@@ -20,6 +20,7 @@ and  Stm = | Asg of Exp * Exp
            | IT of Exp * Stm
            | ITE of Exp * Stm * Stm
            | Return of Exp
+           | Do of Stm
 and Dec  = | VarDec of string * Exp
            | ProcDec of string * string list * Stm
            | ArrayDec of string * Exp * Exp
