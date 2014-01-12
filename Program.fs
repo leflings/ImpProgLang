@@ -36,7 +36,12 @@ open BasisEnv
 //let tcf = parseFromFile "TryCatchFinally.while";;
 //let _ = ignore (stm tcf basisEnv basisStore);;
 
+printfn "ArrayTest program:"
 let at = parseFromFile "ArrayTest.while";;
 let _ = ignore (stm at basisEnv basisStore);;
+
+printfn "\nArrayOfProcedures program:"
+let aop = parseFromFile "ArrayOfProcedures.while";;
+let _ = ignore (stm aop basisEnv basisStore);;
 
 let _ = System.Console.ReadLine() |> ignore;;
