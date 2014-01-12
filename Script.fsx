@@ -8,34 +8,13 @@
 #load "Lexer.fs"
 #load "ParserUtil.fs"
 #load "Interpreter.fs"
+#load "BasisEnv.fs"
 
 open System
 open Interpreter
 open AST
 open ParserUtil
-
-// Functions for an initial environment
-
-let plusInt = Primitive( function [IntVal i1; IntVal i2] -> IntVal(i1+i2) | _ -> failwith "Invalid arguments" );;
-let minusInt = Primitive( function [IntVal i1; IntVal i2] -> IntVal(i1-i2) | _ -> failwith "Invalid arguments" );;
-let multInt = Primitive( function [IntVal i1; IntVal i2] -> IntVal(i1*i2) | _ -> failwith "Invalid arguments" );;
-let eqInt = Primitive( function [IntVal i1; IntVal i2] -> BoolVal(i1=i2) | _ -> failwith "Invalid arguments" );;
-let neqInt = Primitive( function [IntVal i1; IntVal i2] -> BoolVal(i1<>i2) | _ -> failwith "Invalid arguments" );;
-let lessEqInt = Primitive( function [IntVal i1; IntVal i2] -> BoolVal(i1<=i2) | _ -> failwith "Invalid arguments" );;
-let lessInt = Primitive( function [IntVal i1; IntVal i2] -> BoolVal(i1<i2) | _ -> failwith "Invalid arguments" );;
-let gen = let generator = new System.Random()
-          generator.Next;;   
-let randomInt = Primitive( function [IntVal rng] -> IntVal (gen rng) | _ -> failwith "Invalid arguments" );; 
-let toString = let f vs =  match vs with 
-                           | [IntVal v] -> StringVal(string v)
-                           | [BoolVal v] -> StringVal(string v)
-                           | [StringVal v] -> StringVal v
-                           | _          -> failwith "error"
-               Primitive f;;
-
-let initEnv = Map.ofList [("+",plusInt); ("-",minusInt); ("*",multInt); 
-                          ("=",eqInt); ("<>",neqInt); ("<=",lessEqInt); ("<",lessInt); 
-                          ("randomInt", randomInt); ("toString",toString)  ];;
+open BasisEnv
 
 // Parsing strings
 let s1 = parseStm "while <>(!n,0)
@@ -108,3 +87,6 @@ let _ = ignore (stm tf basisEnv basisStore);;
 
 let tcf = parseFromFile "TryCatchFinally.while";;
 let _ = ignore (stm tcf basisEnv basisStore);;
+
+let at = parseFromFile "ArrayTest.while";;
+let _ = ignore (stm at basisEnv basisStore);;

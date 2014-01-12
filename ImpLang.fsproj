@@ -53,6 +53,9 @@
     </FsLex>
     <Compile Include="ParserUtil.fs" />
     <Compile Include="Interpreter.fs" />
+    <Compile Include="BasisEnv.fs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Program.fs" />
     <None Include="Script.fsx" />
     <Content Include="README.txt" />

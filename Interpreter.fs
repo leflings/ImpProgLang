@@ -82,14 +82,12 @@ let rec exp e (env:Env) (store:Store) =
     | Bool b      -> (BoolVal b,store)
     | String s    -> (StringVal s,store)
     | ArrayElm(var, ex) ->
-        let v = match var with
-                | Var v -> v
-                | _ -> failwith "must be array var"
-        let (elm, store2) = exp ex env store
+        let (var, store1) = exp var env store
+        let (elm, store2) = exp ex env store1
         let index = match elm with
                     | IntVal v -> v
                     | _ -> failwith "array index must be integer"
-        match Map.find v env with
+        match var with
         | Reference r -> match Map.find r store2 with
                          | ArrayCnt a -> 
                             try
@@ -97,17 +95,18 @@ let rec exp e (env:Env) (store:Store) =
                             with
                             | :? System.IndexOutOfRangeException -> failwith "array index out of bounds"
                          | _ -> failwith "array not in store"
-        | _ -> failwithf "variable %s is not array" v
+        | _ -> failwith "variable is not array"
     | ArrayFun(var, func) ->
         let var = match var with | Var v -> v | _ -> failwith "must be array var"
-        match Map.find var env with
-        | Reference r -> match Map.find r store with
-                         | ArrayCnt a ->
-                            match func with
-                            | "length" -> (IntVal (Array.length a), store)
-                            | _ -> failwith "unknown array function"
-                         | _ -> failwith "array not in store"
-        | _ -> failwith "variable %s not defined" var
+        let rec resolve re =
+            match Map.find re store with
+            | ArrayCnt a -> a
+            | SimpVal v -> match v with | Reference x -> resolve x | _ -> failwith "Expression not resolved to array"
+            | _ -> failwith "Expression not resolved to array"
+        let array = match Map.find var env with | Reference r -> resolve r | _ -> failwithf "variable %s not defined" var
+        match func with
+        | "length" -> (IntVal (Array.length array), store)
+        | _ -> failwith "unknown array function"
 
 and expList es env store = 
     match es with 
@@ -241,10 +240,11 @@ and dec d env store =
                      | (IntVal _ as res, store1)  
                      | (BoolVal _ as res, store1) 
                      | (StringVal _ as res, store1)  
+                     | (Reference _ as res, store1)
                                                  -> let env2 = Map.add s (Reference loc) env
                                                     let store2 = Map.add loc (SimpVal res) store1
                                                     (env2, store2)
-                     | _                         -> failwith "error"
+                     | x                         -> failwith "error"
     | ProcDec(name, parlist, stm) ->
         let loc = nextLoc()
         let env2 = Map.add name (Reference loc) env

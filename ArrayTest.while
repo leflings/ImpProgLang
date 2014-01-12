@@ -1,16 +1,40 @@
-﻿let len: 10; names[!len]: "Flemming"
+﻿let 
+	len: 10;
+	names[!len]: "Flemming";
+	x: true;
+	proc lookup(array)
+		try
+			return ((array[0])[0])[0]
+		catch
+			print toString("Array index out of bounds")
+		yrt
 in
-	try
-		len := sumArray(names)
-	catch do
-		names[0] := <(1,2);
-		names[4] := =(1,2) od
-	finally
-		call printArray(names)
-	yrt;
-
-	let manynames[3]: names
+	let 
+		manynames[3]: names;
+		a[2]: 30;
+		b[6]: "Hej";
+		c[3]: !x;
+		f[10]: 5;
+		triplearray[3]: manynames
 	in
-		call printArray(manynames)
+		manynames[0] := a;
+		manynames[1] := b;
+		manynames[2] := c;
+		f[3] := 3;
+
+		print toString(f[4]);
+
+		len := (manynames[1])[3];
+		print toString(!len);
+
+		len := ((triplearray[1])[2])[1];
+		print toString(!len);
+
+		len := lookup(triplearray);
+		print toString(!len);
+
+		len := (triplearray[0])[0];
+		len := sumArray(len);
+		print toString(!len)
 	end
 end
