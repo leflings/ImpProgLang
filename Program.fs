@@ -28,6 +28,7 @@ let _ = run "ProcedureReturn"
 let _ = run "TryCatch"
 let _ = run "TryCatchFinally"
 let _ = run "TryFinally"
+let _ = run "ProcedureArguments"
 
 
 let _ = System.Console.ReadLine() |> ignore;;

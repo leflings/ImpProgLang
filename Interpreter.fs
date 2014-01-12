@@ -56,28 +56,29 @@ let rec exp e (env:Env) (store:Store) =
                                                   | _           -> failwith "error"
                       | _                   -> failwith "error"
 
-    | Apply(f,es) -> let (vals, store1) = expList es env store
+    | Apply(f,es) -> let (arglist, store1) = expList es env store
                      let (func, store2) = exp f env store1
                      match func with 
-                     | Primitive f   -> (f vals, store1) 
+                     | Primitive f   -> (f arglist, store1) 
                      | Reference r -> 
-                        match Map.find r store with
-                        | Proc (parlist, defenv, statement) ->
-                            let env =
-                                List.fold2 (fun acc p1 p2 ->
-                                    let p1' = match p1 with
-                                              | Var n -> n
-                                              | _ -> failwith "parameters must be vars"
-                                    let loc = match Map.find p1' env with
-                                              | Reference _ as refl -> refl
-                                              | _ -> failwith "undefined parameter"
-                                    Map.add p2 loc acc
-                                ) env es parlist
-                            let (ret, store') = stm statement env store
+                        let procedure = match Map.find r store with
+                                        | Proc(_,_,_) as p -> p
+                                        | _ -> failwith "variable doesnt reference a procedure"
+                        match procedure with
+                        | Proc(parlist, defenv, statement) ->
+                            let (procenv,procstore) =
+                                List.fold2
+                                    (fun (aenv,astore) arg par ->
+                                        match arg with
+                                        | Reference _ -> ((Map.add par arg aenv), astore)
+                                        | x -> let loc = nextLoc()
+                                               ((Map.add par (Reference loc) aenv), Map.add loc (SimpVal x) astore)
+                                    ) (defenv,store1) arglist parlist
+                            let (ret, store') = stm statement procenv procstore
                             match ret with
                             | Some x -> (x, store')
                             | None -> failwith "Procedure must have return value"
-                        | _ -> failwith "Unknown appliance"
+                        | _ -> failwith "parser problem"
                      | _              -> failwith "type error"          
                                                                
     | Int i       -> (IntVal i, store)
@@ -104,12 +105,6 @@ let rec exp e (env:Env) (store:Store) =
                                                     | ArrayCnt a -> a
                                                     | _ -> failwith "Expression not resolved to array"
                                    | _ -> failwith "Expression not resolved to array"
-//        let rec resolve re =
-//            match Map.find re store with
-//            | ArrayCnt a -> a
-//            | SimpVal v -> match v with | Reference x -> resolve x | _ -> failwith "Expression not resolved to array"
-//            | _ -> failwith "Expression not resolved to array"
-//        let array = match Map.find var env with | Reference r -> resolve r | _ -> failwithf "variable %s not defined" var
         match func with
         | "length" -> (IntVal (Array.length array), store)
         | _ -> failwith "unknown array function"
@@ -173,49 +168,45 @@ and stm st (env:Env) (store:Store) =
                        stm st1 env1 store1
     | Do(st) ->     stm st env store
     | ProcCall(nameExp) ->
-        let (reference, parlist) =
-            match nameExp with
-            | Var _ as v -> let (func,_) = exp v env store
-                            (func, [])
-            | Apply(a,b) -> let plist =
-                                b |> List.map (fun e -> match e with
-                                                        | Var v -> match Map.find v env with
-                                                                   | Reference _ -> v
-                                                                   | _ -> failwith "procedure call parameters can only be references"
-                                                        | _ -> failwith "parameters must be variables")
-                            let (func,_) = exp a env store
-                            (func,plist)
-            | _ -> failwith "what are you calling?"
-        let loc = match reference with | Reference r -> r | _ -> failwith "expression not evaluated to reference"
-        match Map.find loc store with
-        | Proc (parlist', defenv, st) ->
-            let env' = 
-                List.fold2 (fun acc p1 p2 ->
-                    let loc = match Map.tryFind p1 defenv with
-                              | Some x -> match x with
-                                          | Reference _ as refl -> refl
-                                          | _ -> failwith "undefined parameter"
-                              | None -> match Map.find p1 env with
-                                        | Reference _ as refl -> refl
-                                        | _ -> failwith "parameter not in scope"
-                    Map.add p2 loc acc
-                ) env parlist parlist'
-            stm st env' store
-        | _ -> failwith "Error"  
+        match nameExp with
+        | Apply(a, b) ->
+            let procedure = match fst (exp a env store) with
+                            | Reference r -> match Map.find r store with
+                                             | Proc(_,_,_) as p -> p
+                                             | _ -> failwith "variable doesnt reference a procedure"
+                            | _ -> failwith "variable is not a reference"
+            let (arglist,store1) = expList b env store
+            match procedure with
+            | Proc(parlist, defenv, statement) ->
+                let (procenv,procstore) =
+                    List.fold2
+                        (fun (aenv,astore) arg par ->
+                            match arg with
+                            | Reference _ -> ((Map.add par arg aenv), astore)
+                            | x -> let loc = nextLoc()
+                                   ((Map.add par (Reference loc) aenv), Map.add loc (SimpVal x) astore)
+                        ) (defenv,store1) arglist parlist
+                stm statement procenv procstore
+            | _ -> failwith "impossible"    
+        | _ -> failwith "parser problem"
+
     | Return(ex) ->
         let (value, store') = exp ex env store
         (Some value, store')
+
     | IT(ex, st) -> let (res, st') = exp ex env store
                     match res with
                     | BoolVal true -> stm st env st'
                     | BoolVal false -> (None, st')
                     | _ -> failwith "if expr must evalute to boolean"
+
     | ITE(ex, st1, st2) ->
         let (res, st') = exp ex env store
         match res with
         | BoolVal true -> stm st1 env st'
         | BoolVal false -> stm st2 env st'
         | _ -> failwith "if expr must evalute to boolean"
+
     | TC(var, t,c) ->
         try
             stm t env store
