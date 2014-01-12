@@ -1,0 +1,16 @@
+﻿let len: 10; names[!len]: "Flemming"
+in
+	try
+		len := sumArray(names)
+	catch do
+		names[0] := <(1,2);
+		names[4] := =(1,2) od
+	finally
+		call printArray(names)
+	yrt;
+
+	let manynames[3]: names
+	in
+		call printArray(manynames)
+	end
+end

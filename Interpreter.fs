@@ -258,8 +258,6 @@ and dec d env store =
                         | IntVal v -> v
                         | _ -> failwith "Array length must be given as int"
         let (res, store3) = exp init env2 store2
-        let store4 = match res with
-                     | IntVal _ -> Map.add loc (ArrayCnt(Array.init arraysize (fun index -> res))) store3
-                     | _ -> failwith "Arrays only support integers... for now"
+        let store4 = Map.add loc (ArrayCnt(Array.init arraysize (fun _ -> res))) store3
         (env2, store4)
 ;;
