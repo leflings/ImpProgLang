@@ -42,9 +42,9 @@ Stm:
   | CALL NAME LPAR ParList RPAR { ProcCall($2, $4) }
   | IF Exp THEN StmList FI { IT($2, Seq $4) }
   | IF Exp THEN StmList ELSE StmList FI { ITE($2, Seq $4, Seq $6) }
-  | TRY Stm CATCH Stm YRT               { TC($2, $4) }
+  | TRY Stm CATCH NAME Stm YRT               { TC($4, $2, $5) }
   | TRY Stm FINALLY Stm YRT             { TF($2, $4) }
-  | TRY Stm CATCH Stm FINALLY Stm YRT   { TCF($2, $4, $6) }
+  | TRY Stm CATCH NAME Stm FINALLY Stm YRT   { TCF($4, $2, $5, $7) }
   | RETURN Exp { Return($2) }
 
 StmList:

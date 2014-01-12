@@ -5,8 +5,8 @@
 	proc lookup(array)
 		try
 			return ((array[0])[0])[0]
-		catch
-			print toString("Array index out of bounds")
+		catch e
+			print toString(!e)
 		yrt
 in
 	let 
@@ -35,6 +35,12 @@ in
 
 		len := (triplearray[0])[0];
 		len := sumArray(len);
-		print toString(!len)
+		print toString(!len);
+
+		try
+			f[21] := 4
+		catch e
+			print toString(!e)
+		yrt
 	end
 end

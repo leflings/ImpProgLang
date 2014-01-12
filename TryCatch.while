@@ -2,14 +2,16 @@
 in
 	try
 		array[!a] := 3
-	catch
-		array[-(!a,5)] := 3
+	catch error do
+		array[-(!a,5)] := 3;
+		print toString(!error) od
 	yrt;
 
 	try
 		call array()
-	catch
-		call printArray(array)
+	catch error do
+		print toString(!error);
+		call printArray(array) od
 	yrt
 
 end

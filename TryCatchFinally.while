@@ -8,10 +8,13 @@ in
 			a := +(!a,!b);
 			a := 11
 		end
-	catch let s: "Catch block" in
-		call printer(s);
-		call printer(a);
-		a := 17 end
+	catch e
+		let s: "Catch block"
+		in
+			call printer(s);
+			call printer(a);
+			a := 17
+		end
 	finally let s: "Finally block" in
 		call printer(s);
 		call printer(a);
@@ -19,7 +22,7 @@ in
 	yrt;
 	try
 		a := printer(a)
-	catch
+	catch e
 		call printer(a)
 	yrt
 end

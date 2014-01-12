@@ -119,9 +119,9 @@ and expList es env store =
 // stm: Stm -> Env -> Store -> option<Value> * Store
 and stm st (env:Env) (store:Store) = 
     let (res, store') = (ref None, ref store)
-    let exec st = let (r,s) = stm st env !store'
-                  res := r
-                  store' := s
+    let exec st e = let (r,s) = stm st e !store'
+                    res := r
+                    store' := s
     match st with 
     | Asg(el,e) ->
         let (res,store1) = exp e env store
@@ -199,33 +199,32 @@ and stm st (env:Env) (store:Store) =
         | BoolVal true -> stm st1 env st'
         | BoolVal false -> stm st2 env st'
         | _ -> failwith "if expr must evalute to boolean"
-    | TC(t,c) ->
+    | TC(var, t,c) ->
         try
             stm t env store
         with
-        | e -> printfn "(failed with: %s)" e.Message
-               stm c env store
+        | e -> let (env1, store1) = dec (VarDec(var, String e.Message)) env store
+               stm c env1 store1
     | TF(t,f) -> try
                     try
-                        exec t
+                        exec t env
                     with
-                    | e -> printfn "(failed with: %s)" e.Message; ()
+                    | e -> ()
                  finally
-                    exec f
+                    exec f env
                 |> fun _ -> (!res, !store')
-    | TCF(t,c,f) ->
+    | TCF(var, t,c,f) ->
         try
             try
-                exec t
+                exec t env
             with
-            | e -> printfn "(failed with: %s)" e.Message
-                   exec c
-        finally
-            exec f
-        |> fun _ -> (!res, !store')
-                    
-                    
+            | e -> let (env1, store1) = dec (VarDec(var, String e.Message)) env !store'
+                   store' := store1
 
+                   exec c env1
+        finally
+            exec f env
+        |> fun _ -> (!res, !store')
     
 and decList ds env store = 
     match ds with

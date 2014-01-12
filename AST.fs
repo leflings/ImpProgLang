@@ -21,9 +21,9 @@ and  Stm = | Asg of Exp * Exp
            | ITE of Exp * Stm * Stm
            | Return of Exp
            | Do of Stm
-           | TC of Stm * Stm // Try Catch
+           | TC of string * Stm * Stm // Try Catch
            | TF of Stm * Stm // Try Finally
-           | TCF of Stm * Stm * Stm // Try catch finally
+           | TCF of string * Stm * Stm * Stm // Try catch finally
 and Dec  = | VarDec of string * Exp
            | ProcDec of string * string list * Stm
            | ArrayDec of string * Exp * Exp
