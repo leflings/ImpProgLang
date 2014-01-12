@@ -33,13 +33,12 @@ in
 		len := lookup(triplearray);
 		print toString(!len);
 
-		len := triplearray[0][0];
 		print toString("Array length:");
 		print toString(triplearray[0][0].length);
 		print toString("Printing array:");
-		call printArray(len);
+		call printArray(triplearray[0][0]);
 		print toString("Array sum:");
-		print toString(sumArray(len));
+		print toString(sumArray(triplearray[0][0]));
 
 		try
 			f[21] := 4

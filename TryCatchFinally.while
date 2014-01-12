@@ -11,6 +11,7 @@ in
 	catch e
 		let s: "Catch block"
 		in
+			call printer(!e);
 			call printer(s);
 			call printer(a);
 			a := 17
