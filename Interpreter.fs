@@ -70,7 +70,8 @@ let rec exp e (env:Env) (store:Store) =
                                 List.fold2
                                     (fun (aenv,astore) arg par ->
                                         match arg with
-                                        | Reference _ -> ((Map.add par arg aenv), astore)
+                                        | Reference _ ->
+                                            ((Map.add par arg aenv), astore)
                                         | x -> let loc = nextLoc()
                                                ((Map.add par (Reference loc) aenv), Map.add loc (SimpVal x) astore)
                                     ) (defenv,store1) arglist parlist
@@ -127,13 +128,13 @@ and stm st (env:Env) (store:Store) =
     | Asg(el,e) ->
         let (res,store1) = exp e env store
         match el with
-        | Var v -> let (resl, store2) = exp el env store1
+        | Var v -> let (resl, store1) = exp el env store1
                    let loc = match resl with | Reference l -> l | _ -> failwith "type error"
                    match res with
-                   | Reference refloc -> (None, Map.add loc (Map.find refloc store2) store2)
-                   | _ -> (None, Map.add loc (SimpVal res) store2)
+                   | Reference refloc -> (None, Map.add loc (Map.find refloc store1) store1)
+                   | _ -> (None, Map.add loc (SimpVal res) store1)
         | ArrayElm(v,elexp) ->
-            let (indexval, store2) = exp elexp env store
+            let (indexval, store2) = exp elexp env store1
             let index = match indexval with | IntVal v -> v | _ -> failwith "index expression must evaluate to integer"
             match v with
             | Var v ->

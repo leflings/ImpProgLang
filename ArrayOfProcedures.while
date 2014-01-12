@@ -1,8 +1,8 @@
 ﻿let
 	array[4]: 0;
-	proc p1() do print toString("Procedure 1") od;
-	proc p2() do print toString("Procedure 2") od;
-	proc p3() do print toString("Procedure 3") od;
+	proc p1() do print "Procedure 1" od;
+	proc p2() do print "Procedure 2" od;
+	proc p3() do print "Procedure 3" od;
 
 	proc loop(array)
 		let i: 0; p: 0

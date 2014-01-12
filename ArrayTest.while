@@ -6,7 +6,7 @@
 		try
 			return array[0][0][0]
 		catch e
-			print toString(!e)
+			print !e
 		yrt
 in
 	let 
@@ -33,17 +33,29 @@ in
 		len := lookup(triplearray);
 		print toString(!len);
 
-		print toString("Array length:");
+		print "Array length:";
 		print toString(triplearray[0][0].length);
-		print toString("Printing array:");
+		print "Printing array:";
 		call printArray(triplearray[0][0]);
-		print toString("Array sum:");
+		print "Array sum:";
 		print toString(sumArray(triplearray[0][0]));
 
 		try
 			f[21] := 4
 		catch e
-			print toString(!e)
-		yrt
+			print !e
+		yrt;
+
+		let
+			a[5]: "Strings";
+			b[3]: a;
+			c[2]: b
+		in
+			a[1] := 2;
+			print toString(c[0][0][0]);
+			print toString(c[0][0][1]);
+			print toString(c[0][1][0]);
+			print toString(c[0][1][1])
+		end
 	end
 end

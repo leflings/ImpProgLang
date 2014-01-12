@@ -1,14 +1,14 @@
 ﻿let
 	proc printer(line)
 		do
-			print toString("From passed procedure:");
+			print "From passed procedure:";
 			print toString(!line)
 		od
 	; proc pass(ref)
 		let
 			line: "    Success"
 		in
-			print toString("Calling passed procedure");
+			print "Calling passed procedure";
 			call ref(line)
 		end
 in

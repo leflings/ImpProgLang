@@ -73,20 +73,33 @@ let _ = ignore (stm ap1 basisEnv basisStore);;
 let ap2 = parseFromFile"ArrayProg2.while";; 
 let _ = ignore (stm ap2 basisEnv basisStore);;
 
-let test = parseFromFile "ProcedureReturn.while";;
-let _ = ignore (stm test basisEnv basisStore);;
-
-let test1 = parseFromFile "ProcedurePass.while";;
-let _ = ignore (stm test1 basisEnv basisStore);;
-
-let tc = parseFromFile "TryCatch.while";;
-let _ = ignore (stm tc basisEnv basisStore);;
-
-let tf = parseFromFile "TryFinally.while";;
-let _ = ignore (stm tf basisEnv basisStore);;
-
-let tcf = parseFromFile "TryCatchFinally.while";;
-let _ = ignore (stm tcf basisEnv basisStore);;
+// OWN TEST CASES
+let aop = parseFromFile "ArrayOfProcedures.while";;
+let _ = ignore (stm aop  basisEnv basisStore);;
 
 let at = parseFromFile "ArrayTest.while";;
-let _ = ignore (stm at basisEnv basisStore);;
+let _ = ignore (stm at  basisEnv basisStore);;
+
+let pp = parseFromFile "ProcedurePass.while";;
+let _ = ignore (stm pp  basisEnv basisStore);;
+
+let pr = parseFromFile "ProcedureReturn.while";;
+let _ = ignore (stm pr  basisEnv basisStore);;
+
+let tc = parseFromFile "TryCatch.while";;
+let _ = ignore (stm tc  basisEnv basisStore);;
+
+let tcf = parseFromFile "TryCatchFinally.while";;
+let _ = ignore (stm tcf  basisEnv basisStore);;
+
+let tf = parseFromFile "TryFinally.while";;
+let _ = ignore (stm tf  basisEnv basisStore);;
+
+let pa = parseFromFile "ProcedureArguments.while";;
+let _ = ignore (stm pa  basisEnv basisStore);;
+
+let fmt = parseFromFile "FoldMapTest.while";;
+let _ = ignore (stm fmt  basisEnv basisStore);;
+
+let st = parseFromFile "ScopeTest.while";;
+let _ = ignore (stm st  basisEnv basisStore);;

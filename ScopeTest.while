@@ -1,0 +1,14 @@
+﻿let x:  0; y: 0;
+	proc p() x := *(!x,2);
+    proc q()  call p()
+in
+	let x: 5;
+		proc p() x:= +(!x,1)
+	in
+		call q();
+		y := !x
+	end;
+
+	print "Value of y at termination";
+	print toString(!y)
+end

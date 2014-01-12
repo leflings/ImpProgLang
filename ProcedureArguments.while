@@ -14,11 +14,18 @@
 				i := +(!i,1)
 			od;
 			return a
-		end
+		end;
+	proc lte(a,b)
+		if =(!a,!b)
+		then
+			return true
+		else
+			return <(!a,!b)
+		fi
 in call fac(5, output);
-   print toString(!x);
-   print toString(!output) ;
+	print toString(!x);
+	print toString(!output) ;
 
-   print toString("Printing array initialised in procedure") ;
-   call printArray(arrayinit())
+	print "Printing array initialised in procedure";
+	call printArray(arrayinit())
 end   

@@ -2,7 +2,7 @@
 	proc printer(ref) do print toString(!ref) od
 in
 	try 
-		let s: "Attempting to print ref"
+		let s: "Attempting to add string and int"
 		in
 			print toString(!a);
 			a := +(!a,!b);

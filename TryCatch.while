@@ -4,13 +4,13 @@ in
 		array[!a] := 3
 	catch error do
 		array[-(!a,5)] := 3;
-		print toString(!error) od
+		print +("Error: ",!error) od
 	yrt;
 
 	try
 		call array()
 	catch error do
-		print toString(!error);
+		print +("Error: ",!error);
 		call printArray(array) od
 	yrt
 

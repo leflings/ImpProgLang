@@ -1,0 +1,68 @@
+﻿let a: 0;
+	proc errorprinter(e) print +("Error: ",!e);
+	proc fold(array, func, state)
+		let i:0; k: array.length
+		in
+			while <(!i,!k) do
+				try state := func(!state,array[!i])
+				catch e
+					call errorprinter(e)
+				finally
+					i := +(!i,1)
+				yrt
+			od;
+			return !state
+		end;
+	proc map(array, func)
+		let
+			i:0;
+			k: array.length
+		in
+			while <(!i,!k) do
+				try
+					array[!i] := func(array[!i])
+				catch e
+					call errorprinter(e)
+				finally
+					i := +(!i,1)
+				yrt
+			od
+		end;
+	proc plus(a,b) return +(!a,!b);
+	proc plus3(a) return plus(3,!a);
+	proc mult(a,b) return *(!a,!b);
+	proc max(a,b)
+		if <(!a,!b)
+		then return !b
+		else return !a
+		fi
+in
+	a := randomArray(20,5);
+	print +("A","r","ray");
+	call printArray(a);
+
+	print "";
+	print "Mapped with + 3";
+	call map(a,plus3);
+	call printArray(a);
+
+	print "";
+	print "Sum fold:";
+	print toString(fold(a,plus,0));
+
+	print "Product fold:";
+	print toString(fold(a,mult,1));
+
+	print "Max fold:";
+	print toString(fold(a,max,0));
+
+	let
+		names[3]: "Test!";
+		proc string(a) return +(toString(!a)," ")
+	in
+		print "";
+		print toString(fold(names,plus,"Concatanated fold: "));
+		call map(a,string);
+		print toString(fold(a,plus,"Numbers folded into string: "))
+	end
+end

@@ -5,7 +5,17 @@ open AST
 open Interpreter
 open ParserUtil
 
-let plusInt = Primitive( fun [IntVal i1; IntVal i2] -> IntVal(i1+i2) );;
+//let plusInt = Primitive( fun [IntVal i1; IntVal i2] -> IntVal(i1+i2) );;
+//let plusInt = Primitive( fun xs ->
+//                            match List.head xs with
+//                            | IntVal _ -> List.fold (fun acc (IntVal e) -> acc + e) 0 xs |> IntVal
+//                            | StringVal _ -> List.fold (fun acc (StringVal e) -> acc + e) "" xs |> StringVal
+//                            | _ -> failwith "unsupported type")
+let plusInt = Primitive(function | [] -> failwith "Cant apply plus to zero elements"
+                                 | x::_ as xs -> match x with
+                                                 | IntVal _ -> List.fold (fun acc (IntVal e) -> acc + e) 0 xs |> IntVal
+                                                 | StringVal _ -> List.fold (fun acc (StringVal e) -> acc + e) "" xs |> StringVal
+                                                 | _ -> failwith "unsupported type")
 let minusInt = Primitive( fun [IntVal i1; IntVal i2] -> IntVal(i1-i2) );;
 let multInt = Primitive( fun [IntVal i1; IntVal i2] -> IntVal(i1*i2) );;
 let eqInt = Primitive( fun [IntVal i1; IntVal i2] -> BoolVal(i1=i2) );;

@@ -13,11 +13,11 @@
 		end
 in
 	a := ref();
-	print toString("Before procedure call:");
+	print "Before procedure call:";
 	print toString(!b);
-	print toString("Target number");
+	print "Target number";
 	print toString(!t);
 	call a(b,t);
-	print toString("After procedure call:");
+	print "After procedure call:";
 	print toString(!b)
 end

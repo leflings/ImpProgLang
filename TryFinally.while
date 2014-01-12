@@ -1,17 +1,17 @@
 ﻿let a: 10; b: "Flemming"
 in
-	print toString("Value of 'a' before adding an int and a bool in a try block");
+	print "Value of 'a' before adding an int and a bool in a try block";
 	print toString(!a);
 	try do
 		a := 8;
 		a := +(!a,true);
 		a := 11 od
 	finally do
-		print toString("Initial value of 'a' in finally block");
+		print "Initial value of 'a' in finally block";
 		print toString(!a);
 		a := 12 od
 	yrt;
 
-	print toString("Value of 'a' after being modified in finally block");
+	print "Value of 'a' after being modified in finally block";
 	print toString(!a)
 end
