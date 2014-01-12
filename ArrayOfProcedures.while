@@ -1,5 +1,5 @@
 ﻿let
-	array[3]: 0;
+	array[4]: 0;
 	proc p1() do print toString("Procedure 1") od;
 	proc p2() do print toString("Procedure 2") od;
 	proc p3() do print toString("Procedure 3") od;
@@ -7,21 +7,23 @@
 	proc loop(array)
 		let i: 0; p: 0
 		in
-			while <(!i,array.length)
+			while <(!i,+(array.length,1))
 			do
-				try do
-					p := array[!i];
-					i := +(!i,1);
-					call p() od
+				try 
+					call array[!i]()
 				catch e
 					print toString(!e)
+				finally
+					i := +(!i,1)
 				yrt
 			od
 		end
 in
 	array[0] := p1;
 	array[1] := p2;
-	array[2] := p3;
+	array[2] := "Flemming";
+	array[3] := p3;
 
-	call loop(array)
+	call loop(array);
+	call array[1]()
 end

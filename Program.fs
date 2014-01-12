@@ -6,42 +6,28 @@ open ParserUtil
 open Interpreter
 open BasisEnv
 
+let run s = printfn "%s program:" s
+            printfn "-----------"
+            stm (parseFromFile (sprintf "%s.while" s)) basisEnv basisStore |> ignore
+            printfn "-----------\n"
+            ()
 
-// Create an initial environment
+let _ = run "Factorial1"
+let _ = run "Factorial2"
+let _ = run "Factorial3"
+let _ = run "Factorial4"
+let _ = run "Factorial5"
+//let _ = run "ArrayUtil"
+let _ = run "ArrayProg1"
+let _ = run "ArrayProg2"
+let _ = run "ArrayProg2"
+let _ = run "ArrayOfProcedures"
+let _ = run "ArrayTest"
+let _ = run "ProcedurePass"
+let _ = run "ProcedureReturn"
+let _ = run "TryCatch"
+let _ = run "TryCatchFinally"
+let _ = run "TryFinally"
 
-// Parse a program in a file  
-//let fac = parseFromFile "Factorial2.while"
-//
-//// Interpret the program 
-//let _  = stm fac initEnv Map.empty;;
-
-//let ap1 = parseFromFile"ArrayProg1.while";; 
-//let _ = ignore (stm ap1 basisEnv basisStore);;
-
-//let ap2 = parseFromFile"ArrayProg2.while";; 
-//let _ = ignore (stm ap2 basisEnv basisStore);;
-
-//printfn ""
-//
-//let tc = parseFromFile "TryCatch.while";;
-//let _ = ignore (stm tc basisEnv basisStore);;
-//
-//printfn ""
-//
-//let tf = parseFromFile "TryFinally.while";;
-//let _ = ignore (stm tf basisEnv basisStore);;
-//
-//printfn ""
-//
-//let tcf = parseFromFile "TryCatchFinally.while";;
-//let _ = ignore (stm tcf basisEnv basisStore);;
-
-printfn "ArrayTest program:"
-let at = parseFromFile "ArrayTest.while";;
-let _ = ignore (stm at basisEnv basisStore);;
-
-printfn "\nArrayOfProcedures program:"
-let aop = parseFromFile "ArrayOfProcedures.while";;
-let _ = ignore (stm aop basisEnv basisStore);;
 
 let _ = System.Console.ReadLine() |> ignore;;

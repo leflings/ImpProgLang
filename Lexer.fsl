@@ -31,7 +31,6 @@ let keyword s =
     | "catch"     -> CATCH
     | "finally"   -> FINALLY
     | "yrt"       -> YRT
-    | "catch"     -> CATCH
     | _           -> NAME s  
 }
 

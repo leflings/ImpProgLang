@@ -60,14 +60,22 @@
     <None Include="Script.fsx" />
     <Content Include="README.txt" />
     <None Include="Factorial2.while">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Factorial3.while" />
-    <None Include="Factorial4.while" />
-    <None Include="Factorial5.while" />
-    <None Include="Factorial1.while" />
+    <None Include="Factorial3.while">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Factorial4.while">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Factorial5.while">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Factorial1.while">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="ArrayUtil.while">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="ArrayProg1.while">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -75,8 +83,12 @@
     <None Include="ArrayProg2.while">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="ProcedureReturn.while" />
-    <None Include="ProcedurePass.while" />
+    <None Include="ProcedureReturn.while">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ProcedurePass.while">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TryCatch.while">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -84,7 +96,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TryCatchFinally.while">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="ArrayTest.while">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -106,7 +118,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>"C:\Program Files (x86)\FSharpPowerPack-4.0.0.0\bin\fslex" "$(ProjectDir)Lexer.fsl"
-"C:\Program Files (x86)\FSharpPowerPack-4.0.0.0\bin\fsyacc" --module Parser "$(ProjectDir)Parser.fsy"</PreBuildEvent>
+"C:\Program Files (x86)\FSharpPowerPack-4.0.0.0\bin\fsyacc" -v --module Parser "$(ProjectDir)Parser.fsy"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	     Other similar extension points exist, see Microsoft.Common.targets.

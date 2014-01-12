@@ -4,7 +4,7 @@
 	x: true;
 	proc lookup(array)
 		try
-			return ((array[0])[0])[0]
+			return array[0][0][0]
 		catch e
 			print toString(!e)
 		yrt
@@ -24,18 +24,22 @@ in
 
 		print toString(f[4]);
 
-		len := (manynames[1])[3];
+		len := manynames[1][3];
 		print toString(!len);
 
-		len := ((triplearray[1])[2])[1];
+		len := triplearray[1][2][1];
 		print toString(!len);
 
 		len := lookup(triplearray);
 		print toString(!len);
 
-		len := (triplearray[0])[0];
-		len := sumArray(len);
-		print toString(!len);
+		len := triplearray[0][0];
+		print toString("Array length:");
+		print toString(triplearray[0][0].length);
+		print toString("Printing array:");
+		call printArray(len);
+		print toString("Array sum:");
+		print toString(sumArray(len));
 
 		try
 			f[21] := 4

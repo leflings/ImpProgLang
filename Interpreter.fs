@@ -46,7 +46,8 @@ let printenv (env:Env) =
 let rec exp e (env:Env) (store:Store) = 
     match e with
     | Var v       -> match Map.find v env with
-                     | Reference loc as refl -> (refl,store)
+                     | Reference _ as x -> (x,store)
+                     | Primitive _ as x -> (x,store)
                      | IntVal i              -> printfn "%s" (string i) ; failwith "errorXXX"
                      | _                     -> failwith "errorYYY"
     | ContOf er    -> match exp er env store with
@@ -56,10 +57,11 @@ let rec exp e (env:Env) (store:Store) =
                       | _                   -> failwith "error"
 
     | Apply(f,es) -> let (vals, store1) = expList es env store
-                     match Map.find f env with 
+                     let (func, store2) = exp f env store1
+                     match func with 
                      | Primitive f   -> (f vals, store1) 
-                     | Reference f -> 
-                        match Map.find f store with
+                     | Reference r -> 
+                        match Map.find r store with
                         | Proc (parlist, defenv, statement) ->
                             let env =
                                 List.fold2 (fun acc p1 p2 ->
@@ -96,14 +98,18 @@ let rec exp e (env:Env) (store:Store) =
                             | :? System.IndexOutOfRangeException -> failwith "array index out of bounds"
                          | _ -> failwith "array not in store"
         | _ -> failwith "variable is not array"
-    | ArrayFun(var, func) ->
-        let var = match var with | Var v -> v | _ -> failwith "must be array var"
-        let rec resolve re =
-            match Map.find re store with
-            | ArrayCnt a -> a
-            | SimpVal v -> match v with | Reference x -> resolve x | _ -> failwith "Expression not resolved to array"
-            | _ -> failwith "Expression not resolved to array"
-        let array = match Map.find var env with | Reference r -> resolve r | _ -> failwithf "variable %s not defined" var
+    | ArrayFun(arrayExp, func) ->
+        let (var,_) = exp arrayExp env store
+        let array = match var with | Reference r -> match Map.find r store with
+                                                    | ArrayCnt a -> a
+                                                    | _ -> failwith "Expression not resolved to array"
+                                   | _ -> failwith "Expression not resolved to array"
+//        let rec resolve re =
+//            match Map.find re store with
+//            | ArrayCnt a -> a
+//            | SimpVal v -> match v with | Reference x -> resolve x | _ -> failwith "Expression not resolved to array"
+//            | _ -> failwith "Expression not resolved to array"
+//        let array = match Map.find var env with | Reference r -> resolve r | _ -> failwithf "variable %s not defined" var
         match func with
         | "length" -> (IntVal (Array.length array), store)
         | _ -> failwith "unknown array function"
@@ -166,25 +172,36 @@ and stm st (env:Env) (store:Store) =
     | Block(ds,st1) -> let (env1,store1) = decList ds env store 
                        stm st1 env1 store1
     | Do(st) ->     stm st env store
-    | ProcCall(name, parlist) ->
-        match Map.find name env with
-        | Reference loc as refl ->
-            match Map.find loc store with
-            | Proc (parlist', defenv, st) ->
-                let env' = 
-                    List.fold2 (fun acc p1 p2 ->
-                        let loc = match Map.tryFind p1 defenv with
-                                  | Some x -> match x with
-                                              | Reference _ as refl -> refl
-                                              | _ -> failwith "undefined parameter"
-                                  | None -> match Map.find p1 env with
-                                            | Reference _ as refl -> refl
-                                            | _ -> failwith "parameter not in scope"
-                        Map.add p2 loc acc
-                    ) env parlist parlist'
-                stm st env' store
-            | _ -> failwith "Error"  
-        | _ -> failwith "Error"
+    | ProcCall(nameExp) ->
+        let (reference, parlist) =
+            match nameExp with
+            | Var _ as v -> let (func,_) = exp v env store
+                            (func, [])
+            | Apply(a,b) -> let plist =
+                                b |> List.map (fun e -> match e with
+                                                        | Var v -> match Map.find v env with
+                                                                   | Reference _ -> v
+                                                                   | _ -> failwith "procedure call parameters can only be references"
+                                                        | _ -> failwith "parameters must be variables")
+                            let (func,_) = exp a env store
+                            (func,plist)
+            | _ -> failwith "what are you calling?"
+        let loc = match reference with | Reference r -> r | _ -> failwith "expression not evaluated to reference"
+        match Map.find loc store with
+        | Proc (parlist', defenv, st) ->
+            let env' = 
+                List.fold2 (fun acc p1 p2 ->
+                    let loc = match Map.tryFind p1 defenv with
+                              | Some x -> match x with
+                                          | Reference _ as refl -> refl
+                                          | _ -> failwith "undefined parameter"
+                              | None -> match Map.find p1 env with
+                                        | Reference _ as refl -> refl
+                                        | _ -> failwith "parameter not in scope"
+                    Map.add p2 loc acc
+                ) env parlist parlist'
+            stm st env' store
+        | _ -> failwith "Error"  
     | Return(ex) ->
         let (value, store') = exp ex env store
         (Some value, store')

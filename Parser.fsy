@@ -39,7 +39,7 @@ Stm:
   | LET DecList IN StmList END           { Block($2,Seq $4) }
   | DO StmList OD                            { Do(Seq $2) }
   | PRINT Exp                            { PrintLn $2 }
-  | CALL NAME LPAR ParList RPAR { ProcCall($2, $4) }
+  | CALL Exp { ProcCall($2) }
   | IF Exp THEN StmList FI { IT($2, Seq $4) }
   | IF Exp THEN StmList ELSE StmList FI { ITE($2, Seq $4, Seq $6) }
   | TRY Stm CATCH NAME Stm YRT               { TC($4, $2, $5) }
@@ -68,8 +68,7 @@ Exp:
   | BOOL                                 { Bool $1 }
   | STRING                               { String $1}
   | CONTOF Exp                           { ContOf $2 }        
-  | LPAR Exp RPAR                        { $2 }
-  | NAME LPAR ExpList RPAR               { Apply($1, $3) }
+  | Exp LPAR ExpList RPAR               { Apply($1, $3) }
   | Exp LBRAC Exp RBRAC                  { ArrayElm($1, $3) }
   | Exp DOT NAME						 { ArrayFun($1, $3) }
 
