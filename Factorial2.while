@@ -5,7 +5,6 @@ in while <>(!n,0)
       y := *(!n,!y);
       n := -(!n,1)
    od;
-   print "Result is: ";
    print toString(!n);
    print toString(!y) 
 end
